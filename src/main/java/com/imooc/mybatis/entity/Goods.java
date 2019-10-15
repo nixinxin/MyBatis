@@ -11,7 +11,7 @@ public class Goods {
     private Float discount;
     private Integer isFreeDelivery;
     private Integer categoryId;
-    private List<GoodDetail> goodsDetails;
+    private List<GoodsDetail> goodsDetails;
 
     public Integer getGoodsId() {
         return goodsId;
@@ -77,11 +77,11 @@ public class Goods {
         this.categoryId = categoryId;
     }
 
-    public List<GoodDetail> getGoodsDetails() {
+    public List<GoodsDetail> getGoodsDetails() {
         return goodsDetails;
     }
 
-    public void setGoodsDetails(List<GoodDetail> goodsDetails) {
+    public void setGoodsDetails(List<GoodsDetail> goodsDetails) {
         this.goodsDetails = goodsDetails;
     }
 }

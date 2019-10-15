@@ -1,17 +1,18 @@
 package com.imooc.mybatis.entity;
 
-public class GoodDetail {
-    private Integer gdid;
+public class GoodsDetail {
+    private Integer gdId;
     private Integer goodsId;
     private String gdPicUrl;
     private Integer gdOrder;
+    private Goods goods;
 
-    public Integer getGdid() {
-        return gdid;
+    public Integer getGdId() {
+        return gdId;
     }
 
-    public void setGdid(Integer gdid) {
-        this.gdid = gdid;
+    public void setGdId(Integer gdId) {
+        this.gdId = gdId;
     }
 
     public Integer getGoodsId() {
@@ -36,5 +37,13 @@ public class GoodDetail {
 
     public void setGdOrder(Integer gdOrder) {
         this.gdOrder = gdOrder;
+    }
+
+    public Goods getGoods() {
+        return goods;
+    }
+
+    public void setGoods(Goods goods) {
+        this.goods = goods;
     }
 }

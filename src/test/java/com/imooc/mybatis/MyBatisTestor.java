@@ -1,7 +1,7 @@
 package com.imooc.mybatis;
 
 import com.imooc.mybatis.dto.GoodsDTO;
-import com.imooc.mybatis.entity.GoodDetail;
+import com.imooc.mybatis.entity.GoodsDetail;
 import com.imooc.mybatis.entity.Goods;
 import com.imooc.mybatis.utils.MyBatisUtils;
 import org.apache.ibatis.io.Resources;
@@ -335,6 +335,25 @@ public class MyBatisTestor {
             List<Goods> goodsList = sqlSession.selectList("goods.selectOneToMany");
             for (Goods goods: goodsList) {
                 System.out.println(goods.getTitle() + " " + goods.getGoodsDetails().size());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (sqlSession != null) {
+                MyBatisUtils.closeSession(sqlSession);
+            }
+        }
+    }
+
+    @Test
+    public void testManyToOne() {
+        SqlSession sqlSession = null;
+        /*第一个sqlSession*/
+        try {
+            sqlSession = MyBatisUtils.openSession();
+            List<GoodsDetail> goodsDetailList = sqlSession.selectList("goodsDetail.selectManyToOne");
+            for (GoodsDetail goodsDetail: goodsDetailList) {
+                System.out.println(goodsDetail.getGdPicUrl() + " " + goodsDetail.getGoods().getTitle());
             }
         } catch (Exception e) {
             e.printStackTrace();

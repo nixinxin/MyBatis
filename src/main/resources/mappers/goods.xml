@@ -101,11 +101,11 @@
                                                 from babytun.t_goods
                                                 where goods_id = #{value}</delete>
 
-    <resultMap id="rmGoodsTwo" type="com.imooc.mybatis.entity.Goods">
+    <resultMap id="rmGoodsOneToMany" type="com.imooc.mybatis.entity.Goods">
         <id property="goodsId" column="goods_id"/>
         <collection property="goodsDetails" select="goodsDetail.selectByGoodsId" column="goods_id"/>
     </resultMap>
-    <select id="selectOneToMany" resultMap="rmGoodsTwo">
+    <select id="selectOneToMany" resultMap="rmGoodsOneToMany">
         select * from babytun.t_goods
     </select>
 </mapper>
