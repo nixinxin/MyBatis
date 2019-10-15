@@ -332,7 +332,7 @@ public class MyBatisTestor {
     @Test
     public void testSelectOneToMany() {
         SqlSession sqlSession = null;
-        /*第一个sqlSession*/
+
         try {
             sqlSession = MyBatisUtils.openSession();
             List<Goods> goodsList = sqlSession.selectList("goods.selectOneToMany");
@@ -351,7 +351,7 @@ public class MyBatisTestor {
     @Test
     public void testManyToOne() {
         SqlSession sqlSession = null;
-        /*第一个sqlSession*/
+
         try {
             sqlSession = MyBatisUtils.openSession();
             List<GoodsDetail> goodsDetailList = sqlSession.selectList("goodsDetail.selectManyToOne");
@@ -370,7 +370,7 @@ public class MyBatisTestor {
     @Test
     public void testSelectPage() {
         SqlSession sqlSession = null;
-        /*第一个sqlSession*/
+
         try {
             sqlSession = MyBatisUtils.openSession();
             PageHelper.startPage(2, 10);
