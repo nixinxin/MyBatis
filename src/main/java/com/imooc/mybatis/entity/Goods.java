@@ -1,8 +1,10 @@
 package com.imooc.mybatis.entity;
 
-import java.util.List;
+import org.apache.ibatis.annotations.Insert;
 
+import java.util.List;
 public class Goods {
+
     private Integer goodsId;
     private String title;
     private String subTitle;
@@ -83,5 +85,20 @@ public class Goods {
 
     public void setGoodsDetails(List<GoodsDetail> goodsDetails) {
         this.goodsDetails = goodsDetails;
+    }
+
+    @Override
+    public String toString() {
+        return "Goods{" +
+                "goodsId=" + goodsId +
+                ", title='" + title + '\'' +
+                ", subTitle='" + subTitle + '\'' +
+                ", originalCost=" + originalCost +
+                ", currentPrice=" + currentPrice +
+                ", discount=" + discount +
+                ", isFreeDelivery=" + isFreeDelivery +
+                ", categoryId=" + categoryId +
+                ", goodsDetails=" + goodsDetails +
+                '}';
     }
 }
