@@ -5,13 +5,18 @@
 <mapper namespace="goods">
     <!--开启二级缓存
         eviction表示缓存的清除策略，当缓存对象数量达到上线后，自动触发对应算法对缓存对象进行清除
-            1.LRU   最近最少使用的：移除最长时间不被使用的对象
-            2.FIFO  先进先出：按对象进入缓存的顺序来移除他们
+            1.LRU   最近最少使用的：移除最长时间不被使用的缓存对象
+            2.FIFO  先进先出：按对象进入缓存的顺序来移除它们
             3.SOFT  软引用：移除基于垃圾回收器状态和软引用规则的对象
             4.WEAK  弱引用：更积极地移除基于垃圾回收器状态和软引用规则的对象
+        flushInterval: 代表需要多长时间自动清空缓存，单位为毫秒
+        size: 缓存上限，用于保存对象或集合的数量上线
+        readOnly:
+            true:换回只读缓存，每次从缓存中取出的是缓存对象本身，这种执行效率较高
+            false：代表每次取出的是缓存对象的副本，每一次取出的对象都是不同的，这种安全性较高
     -->
-    <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"/>
-    <select id="selectAll" resultType="com.imooc.mybatis.entity.Goods">
+    <cache eviction="LRU" flushInterval="600000" size="512" readOnly="true"/>
+    <select id="selectAll" resultType="com.imooc.mybatis.entity.Goods" useCache="false">
         select * from babytun.t_goods order by goods_id limit 10
     </select>
     <select id="selectById" parameterType="Integer" resultType="com.imooc.mybatis.entity.Goods" useCache="true">
@@ -57,7 +62,7 @@
         select g.*, c.*, '1' as test from babytun.t_goods g, babytun.t_category c
         where g.category_id = c.category_id
     </select>
-    <insert id="insertSelectKey" parameterType="com.imooc.mybatis.entity.Goods">
+    <insert id="insertSelectKey" parameterType="com.imooc.mybatis.entity.Goods" flushCache="true">
         insert into babytun.t_goods(title, sub_title, original_cost, current_price, discount, is_free_delivery, category_id)
         values (#{title},#{subTitle},#{originalCost},#{currentPrice},#{discount},#{isFreeDelivery},#{categoryId})
         <selectKey resultType="Integer" keyProperty="goodsId" order="AFTER">
