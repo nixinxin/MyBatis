@@ -97,7 +97,7 @@ public class MyBatisTestor {
         try {
             sqlSession = MyBatisUtils.openSession();
 
-            Map map = new HashMap<String, Integer>();
+            Map<String, Integer> map = new HashMap<String, Integer>();
             map.put("max", 500);
             map.put("min", 100);
             map.put("limit", 10);
@@ -231,6 +231,27 @@ public class MyBatisTestor {
             int num = sqlSession.delete("goods.delete", 2677);
             sqlSession.commit();
             System.out.println(num);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (sqlSession != null) {
+                sqlSession.rollback();
+            }
+        }
+    }
+
+    @Test
+    public void testDynamicSQL() {
+        SqlSession sqlSession = null;
+        try {
+            sqlSession = MyBatisUtils.openSession();
+            Map<String, Integer> param = new HashMap<String, Integer>();
+            param.put("categoryId", 44);
+            param.put("currentPrice", 500);
+            List<Goods> goodsList = sqlSession.selectList("goods.dynamicSQL", param);
+            sqlSession.commit();
+            for (Goods goods : goodsList) {
+                System.out.println(goods.toString());
+            }
         } catch (Exception e) {
             e.printStackTrace();
             if (sqlSession != null) {
