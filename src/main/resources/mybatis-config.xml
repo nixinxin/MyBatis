@@ -7,6 +7,12 @@
         <!--开启驼峰命名-->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <property name="helperDialect" value="mysql"/>
+            <property name="reasonable" value="true"/>
+        </plugin>
+    </plugins>
     <environments default="producer">
         <environment id="development">
             <transactionManager type="JDBC"/>

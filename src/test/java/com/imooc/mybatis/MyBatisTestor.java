@@ -1,10 +1,13 @@
 package com.imooc.mybatis;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.imooc.mybatis.dto.GoodsDTO;
 import com.imooc.mybatis.entity.GoodsDetail;
 import com.imooc.mybatis.entity.Goods;
 import com.imooc.mybatis.utils.MyBatisUtils;
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -354,6 +357,31 @@ public class MyBatisTestor {
             List<GoodsDetail> goodsDetailList = sqlSession.selectList("goodsDetail.selectManyToOne");
             for (GoodsDetail goodsDetail: goodsDetailList) {
                 System.out.println(goodsDetail.getGdPicUrl() + " " + goodsDetail.getGoods().getTitle());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (sqlSession != null) {
+                MyBatisUtils.closeSession(sqlSession);
+            }
+        }
+    }
+
+    @Test
+    public void testSelectPage() {
+        SqlSession sqlSession = null;
+        /*第一个sqlSession*/
+        try {
+            sqlSession = MyBatisUtils.openSession();
+            PageHelper.startPage(2, 10);
+            List<Goods> pageGoodsList = sqlSession.selectList("goods.selectPage");
+            System.out.println(((Page) pageGoodsList).getPages());
+            System.out.println(((Page) pageGoodsList).getTotal());
+            System.out.println(((Page) pageGoodsList).getStartRow());
+            System.out.println(((Page) pageGoodsList).getEndRow());
+            System.out.println(((Page) pageGoodsList).getPageNum());
+            for (Goods goods: pageGoodsList) {
+                System.out.println(goods.getGoodsId() + " " + goods.getTitle() + " " + goods.getCurrentPrice());
             }
         } catch (Exception e) {
             e.printStackTrace();
