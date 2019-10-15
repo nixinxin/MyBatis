@@ -259,4 +259,69 @@ public class MyBatisTestor {
             }
         }
     }
+
+    @Test
+    public void testLevelOneCache() {
+        SqlSession sqlSession = null;
+        /*第一个sqlSession*/
+        try {
+            sqlSession = MyBatisUtils.openSession();
+            Goods goodsone = sqlSession.selectOne("goods.selectById", 1602);
+            /*第二次查询时直接从sqlSession的一级缓存中获取已有的数据*/
+            Goods goodsTwo = sqlSession.selectOne("goods.selectById", 1602);
+            System.out.println(goodsone.hashCode());
+            System.out.println(goodsTwo.hashCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (sqlSession != null) {
+                MyBatisUtils.closeSession(sqlSession);
+            }
+        }
+        /*第二个sqlSession*/
+        try {
+            sqlSession = MyBatisUtils.openSession();
+            Goods goodsone = sqlSession.selectOne("goods.selectById", 1602);
+            /*commit会强制清空当前命名空间下所有的sqlSession中的缓存*/
+            sqlSession.commit();
+            Goods goodsTwo = sqlSession.selectOne("goods.selectById", 1602);
+            System.out.println(goodsone.hashCode());
+            System.out.println(goodsTwo.hashCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (sqlSession != null) {
+                MyBatisUtils.closeSession(sqlSession);
+            }
+        }
+    }
+
+    @Test
+    public void testLevelTwoCache() {
+        SqlSession sqlSession = null;
+        /*第一个sqlSession*/
+        try {
+            sqlSession = MyBatisUtils.openSession();
+            Goods goodsone = sqlSession.selectOne("goods.selectById", 1602);
+            System.out.println(goodsone.hashCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (sqlSession != null) {
+                MyBatisUtils.closeSession(sqlSession);
+            }
+        }
+        /*第二个sqlSession*/
+        try {
+            sqlSession = MyBatisUtils.openSession();
+            Goods goodsTwo = sqlSession.selectOne("goods.selectById", 1602);
+            System.out.println(goodsTwo.hashCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (sqlSession != null) {
+                MyBatisUtils.closeSession(sqlSession);
+            }
+        }
+    }
 }

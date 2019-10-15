@@ -3,10 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goods">
+    <!--开启二级缓存
+        eviction表示缓存的清除策略，当缓存对象数量达到上线后，自动触发对应算法对缓存对象进行清除
+            1.LRU   最近最少使用的：移除最长时间不被使用的对象
+            2.FIFO  先进先出：按对象进入缓存的顺序来移除他们
+            3.SOFT  软引用：移除基于垃圾回收器状态和软引用规则的对象
+            4.WEAK  弱引用：更积极地移除基于垃圾回收器状态和软引用规则的对象
+    -->
+    <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"/>
     <select id="selectAll" resultType="com.imooc.mybatis.entity.Goods">
         select * from babytun.t_goods order by goods_id limit 10
     </select>
-    <select id="selectById" parameterType="Integer" resultType="com.imooc.mybatis.entity.Goods">
+    <select id="selectById" parameterType="Integer" resultType="com.imooc.mybatis.entity.Goods" useCache="true">
         select * from babytun.t_goods where goods_id = #{value}
     </select>
     <select id="dynamicSQL" parameterType="java.util.Map" resultType="com.imooc.mybatis.entity.Goods">
@@ -58,8 +66,7 @@
     </insert>
     <insert id="insertUseGeneratedKeys" parameterType="com.imooc.mybatis.entity.Goods" useGeneratedKeys="true" keyProperty="goodsId" keyColumn="goods_id">
         insert into babytun.t_goods(title, sub_title, original_cost, current_price, discount, is_free_delivery, category_id)
-        values (#{title},#{subTitle},#{originalCost},#{currentPrice},#{discount},#{isFreeDelivery},#{categoryId})
-    </insert>
+values (#{title},#{subTitle},#{originalCost},#{currentPrice},#{discount},#{isFreeDelivery},#{categoryId})</insert>
     <update id="update" parameterType="com.imooc.mybatis.entity.Goods">
         update babytun.t_goods
         set
