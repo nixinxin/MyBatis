@@ -1,5 +1,7 @@
 package com.imooc.mybatis.entity;
 
+import java.util.List;
+
 public class Goods {
     private Integer goodsId;
     private String title;
@@ -9,20 +11,7 @@ public class Goods {
     private Float discount;
     private Integer isFreeDelivery;
     private Integer categoryId;
-
-    @Override
-    public String toString() {
-        return "Goods{" +
-                "goodsId=" + goodsId +
-                ", title='" + title + '\'' +
-                ", subTitle='" + subTitle + '\'' +
-                ", originalCost=" + originalCost +
-                ", currentPrice=" + currentPrice +
-                ", discount=" + discount +
-                ", isFreeDelivery=" + isFreeDelivery +
-                ", categoryId=" + categoryId +
-                '}';
-    }
+    private List<GoodDetail> goodsDetails;
 
     public Integer getGoodsId() {
         return goodsId;
@@ -86,5 +75,13 @@ public class Goods {
 
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public List<GoodDetail> getGoodsDetails() {
+        return goodsDetails;
+    }
+
+    public void setGoodsDetails(List<GoodDetail> goodsDetails) {
+        this.goodsDetails = goodsDetails;
     }
 }

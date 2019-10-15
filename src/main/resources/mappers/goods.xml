@@ -17,10 +17,15 @@
     -->
     <cache eviction="LRU" flushInterval="600000" size="512" readOnly="true"/>
     <select id="selectAll" resultType="com.imooc.mybatis.entity.Goods" useCache="false">
-        select * from babytun.t_goods order by goods_id limit 10
+        select *
+        from babytun.t_goods
+        order by goods_id
+        limit 10
     </select>
     <select id="selectById" parameterType="Integer" resultType="com.imooc.mybatis.entity.Goods" useCache="true">
-        select * from babytun.t_goods where goods_id = #{value}
+        select *
+        from babytun.t_goods
+        where goods_id = #{value}
     </select>
     <select id="dynamicSQL" parameterType="java.util.Map" resultType="com.imooc.mybatis.entity.Goods">
         select * from babytun.t_goods
@@ -34,13 +39,16 @@
         </where>
     </select>
     <select id="selectByPriceRange" parameterType="java.util.Map" resultType="com.imooc.mybatis.entity.Goods">
-        select * from babytun.t_goods
+        select *
+        from babytun.t_goods
         where current_price between #{min} and #{max}
         order by current_price
         limit 0, #{limit}
     </select>
     <select id="selectGoodsMap" resultType="java.util.LinkedHashMap">
-        select g.*, c.category_id from babytun.t_goods g, babytun.t_category c
+        select g.*, c.category_id
+        from babytun.t_goods g,
+             babytun.t_category c
         where g.category_id = c.category_id
     </select>
     <resultMap id="rmGoods" type="com.imooc.mybatis.dto.GoodsDTO">
@@ -59,31 +67,45 @@
         <result property="test" column="test"/>
     </resultMap>
     <select id="selectGoodsDTO" resultMap="rmGoods">
-        select g.*, c.*, '1' as test from babytun.t_goods g, babytun.t_category c
+        select g.*, c.*, '1' as test
+        from babytun.t_goods g,
+             babytun.t_category c
         where g.category_id = c.category_id
     </select>
     <insert id="insertSelectKey" parameterType="com.imooc.mybatis.entity.Goods" flushCache="true">
-        insert into babytun.t_goods(title, sub_title, original_cost, current_price, discount, is_free_delivery, category_id)
+        insert into babytun.t_goods(title, sub_title, original_cost, current_price, discount, is_free_delivery,
+        category_id)
         values (#{title},#{subTitle},#{originalCost},#{currentPrice},#{discount},#{isFreeDelivery},#{categoryId})
         <selectKey resultType="Integer" keyProperty="goodsId" order="AFTER">
             select last_insert_id()
         </selectKey>
     </insert>
-    <insert id="insertUseGeneratedKeys" parameterType="com.imooc.mybatis.entity.Goods" useGeneratedKeys="true" keyProperty="goodsId" keyColumn="goods_id">
-        insert into babytun.t_goods(title, sub_title, original_cost, current_price, discount, is_free_delivery, category_id)
-values (#{title},#{subTitle},#{originalCost},#{currentPrice},#{discount},#{isFreeDelivery},#{categoryId})</insert>
+    <insert id="insertUseGeneratedKeys" parameterType="com.imooc.mybatis.entity.Goods" useGeneratedKeys="true"
+            keyProperty="goodsId" keyColumn="goods_id">
+        insert into babytun.t_goods(title, sub_title, original_cost, current_price, discount, is_free_delivery,
+                                    category_id)
+        values (#{title}, #{subTitle}, #{originalCost}, #{currentPrice}, #{discount}, #{isFreeDelivery},
+                #{categoryId})</insert>
     <update id="update" parameterType="com.imooc.mybatis.entity.Goods">
         update babytun.t_goods
-        set
-            title=#{title},
+        set title=#{title},
             sub_title=#{subTitle},
             original_cost=#{originalCost},
             current_price=#{currentPrice},
             discount=#{discount},
             is_free_delivery=#{isFreeDelivery},
             category_id=#{categoryId}
-        where
-            goods_id=#{goodsId}
+        where goods_id = #{goodsId}
     </update>
-    <delete id="delete" parameterType="Integer">delete from babytun.t_goods where goods_id = #{value}</delete>
+    <delete id="delete" parameterType="Integer">delete
+                                                from babytun.t_goods
+                                                where goods_id = #{value}</delete>
+
+    <resultMap id="rmGoodsTwo" type="com.imooc.mybatis.entity.Goods">
+        <id property="goodsId" column="goods_id"/>
+        <collection property="goodsDetails" select="goodsDetail.selectByGoodsId" column="goods_id"/>
+    </resultMap>
+    <select id="selectOneToMany" resultMap="rmGoodsTwo">
+        select * from babytun.t_goods
+    </select>
 </mapper>
