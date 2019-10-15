@@ -100,6 +100,9 @@
     <delete id="delete" parameterType="Integer">delete
                                                 from babytun.t_goods
                                                 where goods_id = #{value}</delete>
+    <delete id="deleteByTitle" parameterType="String">delete
+                                                from babytun.t_goods
+                                                where title = #{value}</delete>
 
     <resultMap id="rmGoodsOneToMany" type="com.imooc.mybatis.entity.Goods">
         <id property="goodsId" column="goods_id"/>
@@ -113,4 +116,18 @@
     <select id="selectPage" resultType="com.imooc.mybatis.entity.Goods">
         select * from babytun.t_goods where current_price &lt; 1000
     </select>
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into babytun.t_goods(title, sub_title, original_cost, current_price, discount, is_free_delivery,
+        category_id)
+        values
+            <foreach collection="list" item="item" index="index" separator=",">
+                (#{item.title},#{item.subTitle},#{item.originalCost},#{item.currentPrice},#{item.discount},#{item.isFreeDelivery},#{item.categoryId})
+            </foreach>
+    </insert>
+    <delete id="batchDelete" parameterType="java.util.List">
+        delete from babytun.t_goods where goods_id in
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>

@@ -16,9 +16,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.Reader;
 import java.sql.Connection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * junit单元测试
@@ -244,6 +242,22 @@ public class MyBatisTestor {
     }
 
     @Test
+    public void testDeleteByTitle() {
+        SqlSession sqlSession = null;
+        try {
+            sqlSession = MyBatisUtils.openSession();
+            int num = sqlSession.delete("goods.deleteByTitle", "测试商品");
+            sqlSession.commit();
+            System.out.println(num);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (sqlSession != null) {
+                sqlSession.rollback();
+            }
+        }
+    }
+
+    @Test
     public void testDynamicSQL() {
         SqlSession sqlSession = null;
         try {
@@ -383,6 +397,62 @@ public class MyBatisTestor {
             for (Goods goods: pageGoodsList) {
                 System.out.println(goods.getGoodsId() + " " + goods.getTitle() + " " + goods.getCurrentPrice());
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (sqlSession != null) {
+                MyBatisUtils.closeSession(sqlSession);
+            }
+        }
+    }
+
+    @Test
+    public void testBatchInsert() {
+        SqlSession sqlSession = null;
+
+        try {
+            long startTime = new Date().getTime();
+            sqlSession = MyBatisUtils.openSession();
+            List<Goods> goodsList = new ArrayList<Goods>();
+            for (int i = 0; i < 10000; i++) {
+                Goods goods = new Goods();
+                goods.setTitle("测试商品");
+                goods.setSubTitle("测试子标题");
+                goods.setOriginalCost(200f);
+                goods.setCurrentPrice(100f);
+                goods.setDiscount(0.5f);
+                goods.setIsFreeDelivery(1);
+                goods.setCategoryId(43);
+                goodsList.add(goods);
+            }
+            sqlSession.insert("goods.batchInsert", goodsList);
+            sqlSession.commit();
+            long endTime = new Date().getTime();
+            System.out.println("时间差:" + (endTime - startTime));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (sqlSession != null) {
+                MyBatisUtils.closeSession(sqlSession);
+            }
+        }
+    }
+    @Test
+    public void testBatchDelete() {
+        SqlSession sqlSession = null;
+
+        try {
+            long startTime = new Date().getTime();
+            sqlSession = MyBatisUtils.openSession();
+            List<Integer> goodsIdList = new ArrayList<Integer>();
+            for (int i = 1920; i < 10000; i++) {
+                goodsIdList.add(i);
+
+            }
+            sqlSession.delete("goods.batchDelete", goodsIdList);
+            sqlSession.commit();
+            long endTime = new Date().getTime();
+            System.out.println("时间差:" + (endTime - startTime));
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
