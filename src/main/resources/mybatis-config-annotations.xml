@@ -39,8 +39,12 @@
             </dataSource>
         </environment>
     </environments>
+
+    <!--第二种：使用注解的方式-->
     <mappers>
-        <mapper resource="mappers/goods.xml"/>
-        <mapper resource="mappers/goodsDetail.xml"/>
+        <!--第一种注解注入方式<mapper class="com.imooc.mybatis.dto.GoodsDTO"/>-->
+        <!--第二种注解注入方式，推荐<package name="com.imooc.mybatis.dao"/>-->
+        <package name="com.imooc.mybatis.dao"/>
     </mappers>
+
 </configuration>
